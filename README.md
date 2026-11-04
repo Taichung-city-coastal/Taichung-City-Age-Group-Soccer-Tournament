@@ -1,6 +1,14 @@
 # 115年臺中市分齡足球友誼賽暨國際足球邀請賽
 
-直接開啟 index.html 即可瀏覽，不需要安裝套件或啟動伺服器。發佈時，將根目錄的八個 HTML、style.css、app.js、主視覺.png、logo.jpg、競賽章程 PDF 及 assets 資料夾一併上傳。範例資料夾不屬於新網站。
+直接開啟 index.html 即可瀏覽，不需要安裝套件或啟動伺服器。發佈時，將根目錄的八個 HTML、css/site.css、js/site.js、主視覺.png、logo.jpg、競賽章程 PDF 及 assets 資料夾一併上傳。範例資料夾不屬於新網站。
+
+本網站使用**獨立的樣式與腳本**：所有正式頁面僅引用 `css/site.css`、`js/site.js`，不會讀取 `範例/` 下的任何 CSS、JavaScript 或外部共用檔案。修改範例不會影響本網站，反之亦然。部署時請保留 `css/`、`js/` 資料夾結構，不需上傳 `範例/`。
+
+## GitHub Pages 發布
+1. 下載並解壓縮 `GitHub-Pages-完整發布版.zip`；請**上傳解壓縮後的全部內容**，不要只上傳 ZIP 本身。
+2. GitHub 儲存庫的 `main` 分支根目錄應直接看到 `index.html`、`css/`、`js/`、`assets/`、主視覺圖、Logo、各 HTML 頁面及章程 PDF。不要多包一層資料夾，也不要上傳 `範例/` 或 `.qa/`。
+3. 到 GitHub 儲存庫 **Settings → Pages**，在 **Build and deployment** 選擇 **Deploy from a branch**，**main**、**/(root)**，並儲存。
+4. 上傳完成後檢查瀏覽器開發者工具的 Network：`css/site.css`、`js/site.js` 與圖片應回傳 200，不應再出現 404；如仍看到舊畫面，請重新整理快取。
 
 ## 頁面
 - index.html：首頁、活動倒數、消息、賽程選單及會場介紹
@@ -27,7 +35,7 @@ U6、U15 比賽時間未在該版章程列明；U10、U12 在 12/12 及 12/13 �
 ## 維護
 目前為純靜態網站，無後台、假比分或外部資料 API。
 更新公告：編輯 announcements.html 與首頁對應消息。
-更新時程：同步修改 app.js 的 milestones 與 event-info.html 流程。
+更新時程：同步修改 js/site.js 的 milestones 與 event-info.html 流程。
 發布正式賽程時，再替換 schedule.html 的待公告區塊。
 導航與頁尾直接寫入各 HTML；調整共同導航時請同步八頁。
 所有核心圖片均為本機素材，無須外部字型或 CDN。
