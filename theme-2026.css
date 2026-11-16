@@ -1,0 +1,214 @@
+/* 115 Taichung Football: palette and graphic language from 主視覺.jpg */
+:root {
+  --cream:#eaf6ff;
+  --paper:#f8fcff;
+  --navy:#102e55;
+  --blue:#157bb7;
+  --gold:#f6ae28;
+  --ink:#1b3655;
+  --muted:#53677b;
+  --line:#cce1ee;
+  --radius:18px;
+  --shadow:0 16px 42px #0b41731a;
+  --sky:#3097d0;
+  --orange:#ee4e14;
+  --grass:#459d36;
+}
+body {
+  background:linear-gradient(180deg,#eaf7ff 0,#f8fcff 680px,#fff 100%);
+}
+::selection{background:#ffe27b;color:var(--navy)}
+.eyebrow{color:#126eaa}
+.site-header{
+  background:linear-gradient(105deg,#123966f7 0%,#17649af7 65%,#237bb2f7 100%);
+  border-bottom:3px solid #25abe1;
+  box-shadow:0 8px 24px #0c40622b;
+}
+.site-header:before{
+  content:"";position:absolute;inset:0 auto 0 0;width:160px;pointer-events:none;opacity:.12;
+  background:radial-gradient(circle,#fff 2px,transparent 2.5px) 0 0 / 17px 17px;
+}
+.brand{position:relative}
+.brand img{background:#fff;border-radius:10px;padding:4px;mix-blend-mode:normal;box-shadow:0 3px 12px #0018}
+.brand>span,.header-date{color:#fff}
+.brand small{color:#c4ebff}
+.menu-toggle{border:1.5px solid #ffffffb8;background:#ffffff14}
+.menu-toggle span{background:#fff}
+.menu-toggle:hover,.menu-toggle[aria-expanded=true]{background:var(--orange);border-color:var(--orange)}
+.menu-toggle[aria-expanded=true] span{background:#fff}
+.site-menu{background:#102f56;border-bottom:4px solid var(--orange);box-shadow:0 20px 38px #08284447}
+.menu-inner>a,.nav-schedule>summary{color:white;border-color:#ffffff33}
+.menu-inner a:hover,.nav-schedule>summary:hover,.menu-inner a[aria-current=page]{color:#ffde61}
+.nav-schedule a{color:#14365d;background:#eaf6ff;border-radius:6px}
+.nav-schedule a:hover{color:#bd3a0d;background:#fff3cb}
+.home-hero{padding-top:28px}
+.hero-kicker{border-left:5px solid var(--orange);padding-left:14px;margin-bottom:16px}
+.hero-kicker .eyebrow{color:#11588d;font-size:12px;letter-spacing:.17em}
+.hero-kicker>span:last-child{color:#366283;font-weight:700}
+.poster-frame{
+  position:relative;
+  border:5px solid white;border-radius:20px;background:#fff;overflow:hidden;
+  box-shadow:0 20px 55px #145a9138,0 0 0 1px #1477ac38;
+}
+.main-poster{width:100%;height:auto;object-fit:contain;display:block}
+.poster-partner-links{position:absolute;inset:0;pointer-events:none}
+.poster-partner-link{position:absolute;bottom:0;height:13%;min-height:30px;pointer-events:auto;border-radius:7px;transition:background .2s,box-shadow .2s}
+.poster-partner-link.city{left:8%;width:27%}
+.poster-partner-link.bureau{left:37%;width:26%}
+.poster-partner-link.coastal{left:68%;width:28%}
+.poster-partner-link:hover,.poster-partner-link:focus-visible{background:#0c78bd24;box-shadow:inset 0 0 0 3px var(--orange);outline:0}
+.event-meta{border-bottom:1px solid #bfddeb;color:#173f65;font-weight:800}
+.meta-dot{background:var(--orange);box-shadow:0 0 0 4px #ffe4d5}
+.event-meta a>span{color:var(--orange)}
+.countdown-panel{
+  background:linear-gradient(120deg,#112e58 0%,#175a97 68%,#228dca 100%);
+  border:2px solid #ffffffad;
+  box-shadow:0 18px 40px #0e57823d;
+}
+.countdown-panel:before{content:"";position:absolute;inset:0;opacity:.12;background:repeating-linear-gradient(145deg,transparent 0 53px,#fff 54px 57px,transparent 59px 110px);pointer-events:none}
+.countdown-panel:after{border:14px solid #ffffff16;width:340px;height:340px;right:-90px;top:-135px}
+.countdown-intro .eyebrow,.site-footer .eyebrow{color:#ffdd5a}
+.countdown-intro h2,.countdown-digits strong{color:#fff}
+.countdown-intro p,.countdown-digits span{color:#daefff}
+.section-heading h2{font-weight:900;letter-spacing:.01em}
+.section-heading h2:after{content:"";display:block;width:52px;height:5px;border-radius:4px;margin-top:11px;background:linear-gradient(90deg,var(--orange) 0 70%,#ffcb37 70%)}
+.text-link{border-bottom:2px solid var(--orange)}
+.text-link:hover{color:var(--orange)}
+.news-list{border-top:3px solid var(--sky);border-radius:12px;overflow:hidden;background:#fff;box-shadow:0 8px 25px #0c538412}
+.news-row{border-bottom:1px solid #d7e8f3}
+.news-row:hover{background:#eef8ff}
+.news-tag{background:#e7f5ff;border-color:#b2def5;color:#075d95;border-radius:999px}
+.news-tag.gold{background:#fff2d4;border-color:#ffd279;color:#945713}
+.row-arrow{color:var(--orange)}
+.button{border-radius:12px}
+.button-primary{background:var(--orange);border-color:var(--orange);color:#fff;box-shadow:0 7px 15px #ef4c1829}
+.button-primary:hover{background:#d83e0e;border-color:#d83e0e}
+.button-outline{color:var(--navy);border:2px solid #288ec2;background:#fff}
+.button-outline:hover{background:#e8f6ff}
+.venue-feature{gap:44px}
+.venue-art{height:auto;aspect-ratio:2/1;background:white;border:4px solid #fff;box-shadow:var(--shadow)}
+.venue-art img{position:static;display:block;width:100%;max-width:100%;height:100%;object-fit:contain;opacity:1}
+.venue-art>span{display:none}
+.venue-copy h2{font-weight:900}
+.association-strip{background:linear-gradient(110deg,#dbf3ff,#eefbff);border-top:3px solid #c5e6f7}
+.association-strip img{border-radius:12px;background:#fff;box-shadow:0 5px 15px #18547a18}
+.site-footer{background:linear-gradient(125deg,#0f2c53,#135784);border-top:6px solid #2ba7d9}
+.site-footer strong{color:#fff}
+.page-heading{
+  background:linear-gradient(110deg,#133866 0%,#1674b2 75%,#28a0d3 100%);
+  border-bottom:6px solid #ffcd32;color:#fff;
+}
+.page-heading:before{content:"";position:absolute;inset:0;opacity:.18;pointer-events:none;background:repeating-linear-gradient(153deg,transparent 0 90px,#fff 90px 96px,transparent 96px 180px)}
+.page-heading:after{border:10px solid #ffffff26;right:-80px;top:-155px;width:320px;height:320px}
+.page-heading>.container{position:relative;z-index:1}
+.page-heading h1,.page-heading .eyebrow,.page-heading p,.page-heading .back-link{color:#fff}
+.page-heading .eyebrow{color:#ffe77a}
+.page-heading p{color:#eaf7ff}
+.page-content{background:#fff0}
+.feature-number{color:var(--orange)}
+.table-scroll{border-color:#aad2e8;box-shadow:0 6px 22px #0e4d7b12}
+thead{background:#124674}
+tbody tr:nth-child(even){background:#f0f9ff}
+.notice-box{background:#fff3ce;border-left:5px solid #f4aa20}
+.schedule-banner{background:#eaf7ff;border-top-color:var(--orange)}
+.waiting-panel{background:linear-gradient(180deg,#e3f5ff,#f8fcff)}
+.waiting-ball{background:white;border:2px solid #8fd2f4}
+.document-card{background:#eaf7ff;border-color:#b2ddef}
+.contact-card,.partner-logo{background:#eef8ff}
+.announcement:first-child{border-top-color:var(--sky)}
+.pdf-preview{background:#eef8ff}
+.venue-detail-art{background:#eaf6ff;border-color:#b4d9ec}
+.about-emblem{background:#eaf7ff}
+
+/* Facebook announcement board; additional items are configured in js/announcements.js */
+.fb-announcement-section{padding-top:54px}
+.fb-announcement-section .section-heading{margin-bottom:20px}
+.bulletin-intro{color:#49637b;font-size:14px;max-width:680px;margin:0 0 24px}
+.fb-announcement-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:20px}
+.fb-announcement-grid.is-multi{grid-template-columns:repeat(2,minmax(0,1fr))}
+.bulletin-card{
+  display:grid;grid-template-columns:minmax(160px,36%) 1fr;gap:0;overflow:hidden;
+  width:100%;min-height:250px;padding:0;text-align:left;cursor:pointer;
+  background:#fff;color:var(--navy);border:2px solid #c6e5f4;border-radius:18px;
+  box-shadow:0 11px 28px #0c53821a;transition:transform .2s,box-shadow .2s,border-color .2s;
+}
+.bulletin-card:hover,.bulletin-card:focus-visible{transform:translateY(-4px);box-shadow:0 18px 36px #0b4c7b2e;border-color:#ee5a26}
+.bulletin-card__art{
+  display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;
+  position:relative;min-height:220px;overflow:hidden;
+  background:linear-gradient(139deg,#133d70 0%,#207ab2 43%,#31a9dc 100%);color:#fff;
+}
+.bulletin-card__art:before{content:"";position:absolute;top:-140px;right:-85px;width:220px;height:260px;border:23px solid #fff2;border-radius:50%;transform:rotate(-25deg)}
+.bulletin-card__art:after{content:"";position:absolute;inset:auto 0 0;height:28px;background:linear-gradient(120deg,#3f9934 0 70%,#f7cd34 70%)}
+.bulletin-card__ball{font-size:64px;line-height:1.15;filter:drop-shadow(0 5px 2px #0c2e4b45);z-index:1}
+.bulletin-card__flag{font-size:37px;line-height:1;z-index:1}
+.bulletin-card__brand{font-size:11px;font-family:Arial,sans-serif;letter-spacing:.17em;font-weight:800;z-index:1;color:#e5f8ff}
+.bulletin-card__art.has-photo{padding:9px;background:#e6f4fc}
+.bulletin-card__art.has-photo:before,.bulletin-card__art.has-photo:after{display:none}
+.bulletin-card__photo{display:block;position:absolute;inset:8px;width:calc(100% - 16px);height:calc(100% - 16px);max-width:100%;object-fit:contain;border-radius:8px}
+.bulletin-card__body{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;padding:26px clamp(20px,3vw,40px)}
+.bulletin-card__body .news-tag{margin-bottom:13px}
+.bulletin-card__body strong{display:block;font-size:clamp(20px,2.3vw,27px);line-height:1.5;letter-spacing:.01em;color:#112f55;margin-bottom:11px}
+.bulletin-card__body p{font-size:14px;color:#526a7d;line-height:1.75;margin:0 0 22px}
+.bulletin-card__action{display:inline-flex;align-items:center;gap:10px;font-size:14px;font-weight:900;color:#dc4312}
+.fb-announcement-grid.is-multi .bulletin-card{grid-template-columns:1fr}
+.fb-announcement-grid.is-multi .bulletin-card__art{min-height:140px}
+.fb-announcement-grid.is-multi .bulletin-card__body{padding:22px}
+.fb-announcement-grid.is-multi .bulletin-card__body strong{font-size:20px}
+.fb-announcement-grid.is-multi .bulletin-card__art.has-photo{aspect-ratio:3/2;min-height:0}
+.merged-news-heading{margin:34px 0 16px;color:#164877;font-size:19px;line-height:1.5;font-weight:900}
+.merged-news-heading:before{content:"";display:inline-block;width:5px;height:18px;vertical-align:-3px;border-radius:4px;margin-right:10px;background:var(--orange)}
+.combined-news-list{margin-bottom:6px}
+.fb-announcement-page{margin-bottom:48px}
+.fb-announcement-page .section-heading{margin-bottom:12px}
+.announcement-secondary{border-top:1px solid #d6e8f1;padding-top:42px}
+
+.facebook-post-dialog{box-sizing:border-box;max-width:min(650px,calc(100% - 24px));max-height:calc(100dvh - 24px);width:650px;margin:auto;padding:0;overflow:hidden;border:0;border-radius:18px;background:#fff;box-shadow:0 30px 90px #051e3e8a}
+.facebook-post-dialog::backdrop{background:#041a35cf;backdrop-filter:blur(3px)}
+.facebook-dialog-header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:17px 23px;background:linear-gradient(115deg,#103763,#217eb8);color:white}
+.facebook-dialog-header h2{color:#fff;font-size:17px;line-height:1.4;margin:0}
+.facebook-dialog-close{font-size:24px;line-height:1;flex-shrink:0;width:40px;height:40px;border-radius:50%;border:1px solid #fff9;background:#ffffff1b;color:#fff}
+.facebook-dialog-close:hover{background:var(--orange)}
+.facebook-dialog-content{padding:20px 18px 6px;max-height:calc(100dvh - 178px);overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain;scrollbar-gutter:stable}
+.facebook-dialog-frame{position:relative;width:100%;max-width:500px;margin:auto;overflow:hidden}
+.facebook-dialog-frame iframe{position:absolute;inset:0 auto auto 0;display:block;margin:0;background:#fff;max-width:none;border:0;transform-origin:top left}
+.facebook-dialog-footer{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;padding:14px 20px 20px;border-top:1px solid #dfeaf2;background:#f7fcff}
+.facebook-dialog-footer p{margin:0;color:#586a7c;font-size:12px;text-align:center}
+.facebook-dialog-footer a{color:#ce3d12;font-size:13px;font-weight:800;text-decoration:underline;text-underline-offset:3px}
+body.facebook-dialog-open{overflow:hidden}
+.partner-link{display:inline-flex;align-items:center;gap:8px;color:#134d82;font-weight:800;line-height:1.6;text-decoration:none}
+.partner-link:hover,.partner-link:focus-visible{color:var(--orange)}
+.partner-link:focus-visible{outline:3px solid var(--orange);outline-offset:5px}
+.partner-logo.partner-link{width:100%;transition:box-shadow .2s,transform .2s}
+.partner-logo.partner-link:hover{transform:translateY(-3px);box-shadow:0 9px 25px #11568928}
+.partner-link-indicator{font-size:16px;color:var(--orange)}
+.partner-row .partner-link-name{display:inline-block;font-size:20px;line-height:1.5}
+.partner-wordmark{display:flex;align-items:center;justify-content:center;gap:11px;font-size:clamp(18px,2.5vw,26px);font-weight:900;color:#175484;text-align:center}
+.partner-wordmark:before{content:"◆";font-size:29px;color:#f4ad24}
+.association-strip a.association-logo-link{display:block;flex-shrink:0;border-radius:12px}
+.association-strip a.association-logo-link:hover img{box-shadow:0 6px 20px #155b8a55}
+
+@media(max-width:760px){
+  .site-header:before{width:80px}
+  .poster-frame{border-width:3px;border-radius:12px}
+  .hero-kicker .eyebrow{font-size:9px}
+  .countdown-panel{border-width:1px}
+  .venue-art{height:auto;aspect-ratio:2/1}
+  .venue-art img{width:100%;height:100%}
+  .fb-announcement-section{padding-top:40px}
+  .fb-announcement-grid.is-multi{grid-template-columns:1fr}
+  .bulletin-card{grid-template-columns:1fr;min-height:0}
+  .bulletin-card__art{min-height:145px;flex-direction:row;gap:15px}
+  .bulletin-card__art.has-photo{min-height:0;aspect-ratio:3/2;padding:8px}
+  .bulletin-card__ball{font-size:54px}
+  .bulletin-card__flag{font-size:30px}
+  .bulletin-card__brand{font-size:9px}
+  .bulletin-card__body{padding:23px}
+  .bulletin-card__body strong{font-size:20px}
+  .facebook-post-dialog{max-width:calc(100% - 16px);max-height:calc(100dvh - 16px);border-radius:12px}
+  .facebook-dialog-header{padding:12px 14px}
+  .facebook-dialog-header h2{font-size:14px}
+  .facebook-dialog-content{padding:12px 7px 6px;max-height:calc(100dvh - 148px)}
+  .facebook-dialog-footer{padding:10px 12px 14px}
+}
+@media print{.facebook-post-dialog,.bulletin-card__action{display:none!important}.bulletin-card{box-shadow:none;break-inside:avoid}}
