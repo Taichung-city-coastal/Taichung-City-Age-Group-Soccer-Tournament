@@ -8,6 +8,16 @@
 
   const announcements = [
     {
+      id: "dream-dteam-u15",
+      category: "參賽隊伍介紹",
+      title: "🔥 參賽隊伍介紹｜足夢DTEAMU15",
+      description: "由足夢東海、足夢蜻蜓、足夢平原畢業學員共同組成，延續青少年足球活動。",
+      postUrl: "https://www.facebook.com/permalink.php?story_fbid=pfbid02Cstu7jRrnwSpwFf71SZGyP5VDBwVBqaQXHFLZrL5zLuT7G5ADgCcAe229es9MoLAl&id=61555701383095",
+      image: "assets/announcements/dream-dteam-u15-first.jpg",
+      imageAlt: "足夢DTEAMU15 球員身穿粉紅色球衣，賽前圍成一圈互相鼓勵",
+      flag: "⚽"
+    },
+    {
       id: "on-fire-hong-kong",
       category: "國際隊伍介紹",
       title: "🔥 國際隊伍介紹｜香港熱火體育會 On Fire Athletic Association",

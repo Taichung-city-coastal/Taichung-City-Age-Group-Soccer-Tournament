@@ -37,6 +37,7 @@ U6、U15 比賽時間未在該版章程列明；U10、U12 在 12/12 及 12/13 �
 更新 Facebook 公告：編輯 `js/announcements.js` 最上方的 `announcements` 陣列。將新公告放在第一筆，填寫 `id`、`category`（標籤）、`title`（標題）、`description`（簡介）、`postUrl`（Facebook 貼文**公開的永久連結**）、`image`（貼文第一張照片的**本地相對路徑**，例如 `assets/announcements/xxx.jpg`）、`imageAlt`（圖片說明），`flag`（無圖片時的可選 emoji）。**首頁與「大會公告」會自動同步**；首頁最多顯示 3 筆，公告頁顯示全部。卡片點擊後開啟 Facebook 官方 `/plugins/post.php` 內嵌視窗，關閉視窗後停止載入 iframe，並保留「在 Facebook 開啟原文」備用連結。這是手動設定的公告列表，不會自動讀取整個 Facebook 粉絲專頁的新貼文。
 Facebook 內嵌視窗支援響應式寬度：寬螢幕使用原生貼文寬度（最高 500px）；手機低於 Facebook 貼文可用的 350px 寬度時，會等比例縮小 iframe 並同步修正高度，不再出現橫向捲軸，僅在需要時保留垂直捲動。旋轉手機或調整視窗也會重新排版。
 第一篇公告為「🔥 國際隊伍介紹｜香港熱火體育會 On Fire Athletic Association」，使用使用者提供的 `story_fbid=pfbid02QUQnzXSurMYzh3hJy6b3wabCc9JjYzvCzD87GpmpGxpP9kBgdrikeJos6Rcuxc2rl`、`id=61555701383095`。已從 Facebook 官方貼文內嵌 HTML 取得第一張圖片並下載為 `assets/announcements/on-fire-hong-kong-first.jpg`，公告卡片使用此本地 JPEG，不受 Facebook 暫時性圖片網址過期影響。Facebook 若因貼文權限、登入狀態或第三方嵌入限制未顯示內容，請使用原文連結；網站本身無法解除 Facebook 的限制。
+2026-11-18 新增「🔥 參賽隊伍介紹｜足夢DTEAMU15」，其公開貼文為 `story_fbid=pfbid02Cstu7jRrnwSpwFf71SZGyP5VDBwVBqaQXHFLZrL5zLuT7G5ADgCcAe229es9MoLAl`、`id=61555701383095`。貼文第一張照片下載為 `assets/announcements/dream-dteam-u15-first.jpg`，於公告清單最前方顯示；香港熱火體育會公告仍保留在第二筆。兩篇公告皆有未啟用 JS 時可直接開啟 Facebook 的備用連結。
 更新賽務文字公告：編輯 `announcements.html` 下方「賽務資訊與提醒」及 `index.html` 的合併「大會最新消息與公告」區塊。過期報名消息已移除。
 更新時程：同步修改 js/site.js 的 milestones 與 event-info.html 流程。
 發布正式賽程時，再替換 schedule.html 的待公告區塊。
