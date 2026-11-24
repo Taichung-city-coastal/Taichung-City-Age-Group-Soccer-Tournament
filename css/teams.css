@@ -1,4 +1,4 @@
-/* Team cards use a fixed photo-frame height and show the entire uncropped image. */
+/* Keep team photo frames consistent; mobile frames fully cover their allotted space. */
 .teams-overview {display:flex;align-items:center;justify-content:space-between;gap:24px;margin:0 0 26px}
 .teams-overview p {margin:0;color:#45637d;font-size:15px}
 .teams-grid {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
@@ -35,12 +35,17 @@
 .team-dialog-intro {white-space:pre-line;overflow-wrap:anywhere;color:#304c63;font-size:15px;line-height:2}
 .team-facebook-link {display:inline-flex;margin-top:20px;padding:10px 16px;background:#e9f5fc;border-radius:9px;color:#0c5488;font-weight:800;font-size:13px}
 body.team-dialog-open {overflow:hidden}
-@media(max-width:930px) {.teams-grid {grid-template-columns:repeat(2,minmax(0,1fr))}.team-dialog-content {gap:18px;padding:18px}}
-@media(max-width:680px) {
+@media(max-width:930px) {
+  .teams-grid {grid-template-columns:repeat(2,minmax(0,1fr))}
+  .team-dialog-content {gap:18px;padding:18px}
+  /* Cover the whole frame even on wider phones / landscape / small tablets. */
+  .team-card-art {position:relative;display:block;padding:0}
+  .team-card-art img {position:absolute;inset:0;display:block;width:100%;height:100%;max-width:none;object-fit:cover;object-position:center;border-radius:0}
+}
+@media(max-width:760px) {
   .teams-grid {grid-template-columns:1fr;gap:18px}
   .team-card {flex-direction:row;height:164px;min-height:0}
   .team-card-art {width:52%;height:100%;min-height:0;padding:0;border-bottom:0;border-right:1px solid #d4e8f4}
-  .team-card-art img {object-fit:cover;border-radius:0}
   .team-card-body {gap:5px;padding:12px 10px;overflow:hidden}
   .team-card-category {font-size:10px}
   .team-card-name {font-size:15px;line-height:1.25;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
