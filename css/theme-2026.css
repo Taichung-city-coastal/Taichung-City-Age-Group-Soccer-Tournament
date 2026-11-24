@@ -95,15 +95,14 @@ body {
 .site-footer{background:linear-gradient(125deg,#0f2c53,#135784);border-top:6px solid #2ba7d9}
 .site-footer strong{color:#fff}
 .page-heading{
+  padding:32px 0 34px;
   background:linear-gradient(110deg,#133866 0%,#1674b2 75%,#28a0d3 100%);
   border-bottom:6px solid #ffcd32;color:#fff;
 }
 .page-heading:before{content:"";position:absolute;inset:0;opacity:.18;pointer-events:none;background:repeating-linear-gradient(153deg,transparent 0 90px,#fff 90px 96px,transparent 96px 180px)}
 .page-heading:after{border:10px solid #ffffff26;right:-80px;top:-155px;width:320px;height:320px}
 .page-heading>.container{position:relative;z-index:1}
-.page-heading h1,.page-heading .eyebrow,.page-heading p,.page-heading .back-link{color:#fff}
-.page-heading .eyebrow{color:#ffe77a}
-.page-heading p{color:#eaf7ff}
+.page-heading h1{margin:0;color:#fff;line-height:1.35}
 .page-content{background:#fff0}
 .feature-number{color:var(--orange)}
 .table-scroll{border-color:#aad2e8;box-shadow:0 6px 22px #0e4d7b12}
@@ -118,6 +117,11 @@ tbody tr:nth-child(even){background:#f0f9ff}
 .announcement:first-child{border-top-color:var(--sky)}
 .pdf-preview{background:#eef8ff}
 .venue-detail-art{background:#eaf6ff;border-color:#b4d9ec}
+.venue-detail-art--map{padding:12px;background:#f5fbff}
+.venue-detail-art--map a{display:block;width:100%;background:white;border-radius:8px;overflow:hidden}
+.venue-detail-art--map a:focus-visible{outline:3px solid var(--orange);outline-offset:5px}
+.venue-detail-art--map img{display:block;width:100%;height:auto;object-fit:contain}
+.venue-detail-art--map>span{padding:12px 16px;color:#346b91;letter-spacing:.04em;font-size:12px;text-align:center}
 .about-emblem{background:#eaf7ff}
 
 /* Facebook announcement board; additional items are configured in js/announcements.js */
@@ -189,6 +193,7 @@ body.facebook-dialog-open{overflow:hidden}
 .association-strip a.association-logo-link:hover img{box-shadow:0 6px 20px #155b8a55}
 
 @media(max-width:760px){
+  .page-heading{padding:24px 0 26px}
   .site-header:before{width:80px}
   .poster-frame{border-width:3px;border-radius:12px}
   .hero-kicker .eyebrow{font-size:9px}

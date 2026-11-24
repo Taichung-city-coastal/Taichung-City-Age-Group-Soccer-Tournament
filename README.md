@@ -1,8 +1,8 @@
 # 115年臺中市分齡足球友誼賽暨國際足球邀請賽
 
-直接開啟 index.html 即可瀏覽，不需要安裝套件或啟動伺服器。發佈時，將根目錄的八個 HTML、`css/site.css`、`css/theme-2026.css`、`js/site.js`、`js/announcements.js`、`主視覺.jpg`、`logo.jpg`、競賽章程 PDF 及 `assets/` 資料夾一併上傳。`範例/` 資料夾不屬於新網站。
+直接開啟 index.html 即可瀏覽，不需要安裝套件或啟動伺服器。發佈時，將根目錄的九個 HTML、`css/`、`js/`、`主視覺.jpg`、`logo.jpg`、競賽章程 PDF 及 `assets/` 資料夾一併上傳。`範例/` 資料夾不屬於新網站。
 
-本網站使用**獨立的樣式與腳本**：八個正式頁面載入 `css/site.css` 與 `css/theme-2026.css`，首頁與大會公告頁另載入 `js/announcements.js`；所有頁面均載入 `js/site.js`。不會讀取 `範例/` 下的任何 CSS、JavaScript 或外部共用檔案。
+本網站使用**獨立的樣式與腳本**：九個正式頁面載入 `css/site.css` 與 `css/theme-2026.css`，球隊介紹頁另載入 `css/teams.css`、`js/team-data.js` 及 `js/teams.js`；賽程頁另外載入 `css/schedule.css`、`js/schedule-engine.js` 及 `js/schedule.js`；所有頁面均載入 `js/site.js`。
 
 ## GitHub Pages 發布
 1. 使用新版 `GitHub-Pages-新版主視覺與FB公告.zip`，解壓縮後**上傳全部內容**，不要只上傳 ZIP 本身。舊的 `GitHub-Pages-完整發布版.zip` 是修改前的版本。
@@ -11,12 +11,13 @@
 4. 上傳完成後檢查瀏覽器開發者工具的 Network：`css/site.css`、`js/site.js` 與圖片應回傳 200，不應再出現 404；如仍看到舊畫面，請重新整理快取。
 
 ## 頁面
-- index.html：主視覺、活動倒數、合併後的「大會最新消息與公告」（Facebook 貼文／章程／賽程）、會場介紹；主視覺下方三個單位 Logo 區域可點選前往各單位官方頁面
-- announcements.html：Facebook 最新公告完整列表與賽務章程、賽程公告（已移除過期報名公告）
+- index.html：主視覺、活動倒數、合併後的「大會最新消息與公告」（章程／賽程）、球隊介紹入口及會場介紹；主視覺下方三個單位 Logo 區域可點選前往各單位官方頁面
+- announcements.html：賽務章程、賽程公告（已移除原有的球隊介紹貼文和過期報名公告）
+- teams.html：參賽球隊介紹，16 支球隊（素材資料夾 15 隊及原公告香港熱火體育會）、64 張照片；點選球隊卡片即可開啟可關閉的完整介紹與相簿
 - event-info.html：活動流程、組別資格及報名資訊
-- schedule.html：U6、U8、U10、U12、U15、成人組下拉選單
+- schedule.html：U6、U8、U10、U12、U15 由 Google 試算表載入的日期分組對戰卡片，提供隊名搜尋、日期篩選、更新狀態與重新整理；成人組等待大會公布；小組表及對戰階梯圖暫時顯示「載入失敗」
 - regulations.html：章程重點、PDF 預覽／下載
-- venue-map.html：活動會場與 Google 地圖查詢
+- venue-map.html：活動會場使用 `assets/map.jpg` 平面圖展示，可開啟原尺寸；保留 Google 地圖查詢
 - partners.html：依主視覺列示主辦、協辦與承辦單位；Logo 與名稱可開啟官方網站／Facebook
 - about.html：獨立海線足球協會介紹
 
@@ -24,25 +25,24 @@
 賽事事實以原有「115年臺中市分齡足球友誼賽暨國際足球邀請賽1105 球隊公告版.pdf」六頁內容為依據。
 2026-11-17 改用根目錄的 `主視覺.jpg`（包含主視覺與相關單位）。網站新增藍天、橘紅、草地綠配色；「相關單位」頁面的角色依新版主視覺列示：主辦單位臺中市政府、協辦單位臺中市政府運動局、承辦單位臺中市海線足球協會。既有運動局與協會 Logo 保留為本地素材，市政府以名稱標誌呈現。
 協會介紹使用提供的原文，合併段落內的換行。
-未取用範例的學童盃排名、日期、贊助商、報名費或賽程資料。
+賽程視覺及排名／階梯圖計算方式參考 `/2026` 學童盃範例，但所有正式對戰、時間、場地及比分均取自本賽事專用試算表，未沿用學童盃的球隊、賽程或結果。
 
 ## 日期與待公告資訊
 倒數起始為 2026-12-05T13:00:00+08:00；首週結束為 12/6 19:30，第二週開始為 12/12 13:00，活動結束為 12/13 20:30。時間以明確臺灣時區計算；階段結束會切換下一階段，最終歸零。
-所有組別目前固定顯示「等待大會公告」，成人組依章程標明成人女子。
+U6、U8、U10、U12、U15 目前依公開 Google 試算表顯示賽程；成人組尚未有工作表，保持「等待大會公布」。
 U6、U15 比賽時間未在該版章程列明；U10、U12 在 12/12 及 12/13 皆列有預／決賽，保留原表並註明個別場次待公告。
-場地未擅自填入地址，地圖使用章程園區名稱搜尋。
+場地未擅自填入地址，Google 地圖連結使用章程園區名稱搜尋；會場圖改用 `assets/map.jpg`。
 
 ## 維護
-目前為純靜態網站，無後台、假比分或外部資料 API。
-更新 Facebook 公告：編輯 `js/announcements.js` 最上方的 `announcements` 陣列。將新公告放在第一筆，填寫 `id`、`category`（標籤）、`title`（標題）、`description`（簡介）、`postUrl`（Facebook 貼文**公開的永久連結**）、`image`（貼文第一張照片的**本地相對路徑**，例如 `assets/announcements/xxx.jpg`）、`imageAlt`（圖片說明），`flag`（無圖片時的可選 emoji）。**首頁與「大會公告」會自動同步**；首頁最多顯示 3 筆，公告頁顯示全部。卡片點擊後開啟 Facebook 官方 `/plugins/post.php` 內嵌視窗，關閉視窗後停止載入 iframe，並保留「在 Facebook 開啟原文」備用連結。這是手動設定的公告列表，不會自動讀取整個 Facebook 粉絲專頁的新貼文。
-Facebook 內嵌視窗支援響應式寬度：寬螢幕使用原生貼文寬度（最高 500px）；手機低於 Facebook 貼文可用的 350px 寬度時，會等比例縮小 iframe 並同步修正高度，不再出現橫向捲軸，僅在需要時保留垂直捲動。旋轉手機或調整視窗也會重新排版。
-第一篇公告為「🔥 國際隊伍介紹｜香港熱火體育會 On Fire Athletic Association」，使用使用者提供的 `story_fbid=pfbid02QUQnzXSurMYzh3hJy6b3wabCc9JjYzvCzD87GpmpGxpP9kBgdrikeJos6Rcuxc2rl`、`id=61555701383095`。已從 Facebook 官方貼文內嵌 HTML 取得第一張圖片並下載為 `assets/announcements/on-fire-hong-kong-first.jpg`，公告卡片使用此本地 JPEG，不受 Facebook 暫時性圖片網址過期影響。Facebook 若因貼文權限、登入狀態或第三方嵌入限制未顯示內容，請使用原文連結；網站本身無法解除 Facebook 的限制。
-2026-11-18 新增「🔥 參賽隊伍介紹｜足夢DTEAMU15」，其公開貼文為 `story_fbid=pfbid02Cstu7jRrnwSpwFf71SZGyP5VDBwVBqaQXHFLZrL5zLuT7G5ADgCcAe229es9MoLAl`、`id=61555701383095`。貼文第一張照片下載為 `assets/announcements/dream-dteam-u15-first.jpg`，於公告清單最前方顯示；香港熱火體育會公告仍保留在第二筆。兩篇公告皆有未啟用 JS 時可直接開啟 Facebook 的備用連結。
-更新賽務文字公告：編輯 `announcements.html` 下方「賽務資訊與提醒」及 `index.html` 的合併「大會最新消息與公告」區塊。過期報名消息已移除。
+目前為純靜態網站，無後台或假比分；只有賽程頁由公開 Google 試算表讀取資料，需要連網，其他頁面仍可離線瀏覽。
+更新參賽球隊：每隊在 `assets/球隊介紹/隊名/` 底下放置 `介紹.txt` 和任意層級的 JPG/PNG/WebP 照片，執行 `python scripts/build-team-data.py` 即會重新產生 `js/team-data.js`；正式發布時將新資料檔與照片一起上傳。純靜態 `file://` 網站不使用瀏覽器即時讀取文字檔，因為本機瀏覽器通常會阻止此類讀取。
+香港熱火體育會沿用先前 Facebook 公告的本地圖片及原文連結，直接與素材資料夾內的 15 隊並列。舊的「足夢DTEAMU15」公告已從頁面移除，素材資料夾的「足夢DTEAM」仍以資料夾內提供的新介紹獨立呈現。
+更新賽務文字公告：編輯 `announcements.html`「賽務資訊與提醒」及 `index.html` 的「大會最新消息與公告」區塊。
 更新時程：同步修改 js/site.js 的 milestones 與 event-info.html 流程。
-發布正式賽程時，再替換 schedule.html 的待公告區塊。
-導航與頁尾直接寫入各 HTML；調整共同導航時請同步八頁。
-所有核心圖片均為本機素材，無須外部字型或 CDN；只有 Facebook 貼文 iframe 需要連線與 Facebook 公開嵌入權限。
+更新正式賽程：直接編輯 [大會賽程 Google 試算表](https://docs.google.com/spreadsheets/d/1ftHNzPYCmHHl9611hHOHmX5H6WUHiQ8h9PkPhUUlfcc/edit?usp=sharing)。工作表名稱使用 U6、U8、U10、U12、U15，每頁前兩列為標題及表頭，欄位為日期、時間、場地、場次、歲組、隊名、成績、隊名。日期可以只填一天第一筆，會向下延用；「開幕」等非對戰場次以活動卡呈現。賽程頁每 30 秒檢查更新，也可手動重整。成人組上傳前保持等待公告。
+小組與淘汰賽計算封裝在 `js/schedule-engine.js`；正式表格先不對外顯示，畫面依需求固定顯示「載入失敗」，待大會確認分組與規則後再開放。對外排名必須等小組全部比完且同分判定無歧義才能使用，不能用暫時積分自行認定晉級。
+導航與頁尾直接寫入各 HTML；調整共同導航時請同步九頁。
+所有核心圖片均為本機素材，無須外部字型或 CDN；香港熱火體育會的 Facebook 原文連結需要網路。
 正式網站上線後可將 og:image（目前為 `主視覺.jpg`）改成正式站的完整絕對網址。
 
 ## 已完成驗證
@@ -51,4 +51,7 @@ Facebook 內嵌視窗支援響應式寬度：寬螢幕使用原生貼文寬度�
 - 檢查 241 個本機資源與連結引用，無遺失檔案。
 - 6 個倒數邊界情境通過：開始前、首週開始、週末間隔、第二週開始、結束與結束後，不會出現負數。
 - 小字藍色與主要背景的對比已達一般文字 4.5:1 要求。
+- 賽程邏輯驗證：`node scripts/schedule-engine.test.js`，涵蓋積分、同分順位、籤位、加時賽／PK 與晉級關係。
+- 公開試算表核對：`node scripts/check-live-schedule.js`，已確認 U6 13 場、U8 21 場、U10 10 場、U12 16 場、U15 13 場，另有三筆開幕活動；未有比分時不預測晉級隊伍。
+- 真實 Chrome 驗證：`node .qa/test_schedule_cdp.mjs`，確認 Google 賽程讀取、模糊搜尋、兩個「載入失敗」分頁、成人組「等待大會公布」，手機 390px 和 320px 沒有橫向溢出。
 
