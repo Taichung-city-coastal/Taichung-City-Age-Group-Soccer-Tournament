@@ -38,11 +38,12 @@ body.team-dialog-open {overflow:hidden}
 @media(max-width:930px) {.teams-grid {grid-template-columns:repeat(2,minmax(0,1fr))}.team-dialog-content {gap:18px;padding:18px}}
 @media(max-width:680px) {
   .teams-grid {grid-template-columns:1fr;gap:18px}
-  .team-card {flex-direction:row;height:195px;min-height:0}
-  .team-card-art {width:42%;height:100%;min-height:0;border-bottom:0;border-right:1px solid #d4e8f4}
-  .team-card-body {padding:15px 13px}
-  .team-card-name {font-size:17px}
-  .team-card-summary {font-size:12px;-webkit-line-clamp:2;min-height:0}
+  .team-card {flex-direction:row;height:164px;min-height:0}
+  .team-card-art {width:52%;height:100%;min-height:0;padding:6px;border-bottom:0;border-right:1px solid #d4e8f4}
+  .team-card-body {gap:5px;padding:12px 10px;overflow:hidden}
+  .team-card-category {font-size:10px}
+  .team-card-name {font-size:15px;line-height:1.25;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+  .team-card-summary {font-size:11px;line-height:1.5;-webkit-line-clamp:2;min-height:0}
   .teams-overview p {font-size:13px}
   .team-dialog {width:calc(100% - 12px);max-height:calc(100dvh - 12px);border-radius:12px}
   .team-dialog-header {padding:10px 12px}
@@ -52,6 +53,6 @@ body.team-dialog-open {overflow:hidden}
   .team-dialog-details {margin-top:20px;padding:0 4px 15px}
   .team-dialog-intro {font-size:14px;line-height:1.9}
 }
-@media(max-width:370px) {.team-card-art {width:38%}.team-card-body {padding:12px}.team-card-name {font-size:15px}.team-card-summary {font-size:11px}.team-thumbnail {flex-basis:68px;height:55px}}
+@media(max-width:370px) {.team-card-art {width:48%}.team-card-body {padding:10px 8px}.team-card-name {font-size:14px}.team-card-summary {font-size:10px}.team-thumbnail {flex-basis:68px;height:55px}}
 @media(prefers-reduced-motion:reduce) {.team-card {transition:none}}
 @media print {.team-dialog {display:none!important}.team-card {break-inside:avoid;box-shadow:none}.teams-grid {grid-template-columns:repeat(2,minmax(0,1fr))}}
