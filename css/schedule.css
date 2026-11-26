@@ -21,6 +21,7 @@
 .schedule-updated {font-variant-numeric:tabular-nums}
 .schedule-tabs {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;
   margin-bottom:28px;padding:7px;border-radius:16px;background:#e5f2fa;scroll-margin-top:95px}
+.schedule-tabs.is-single-tab {grid-template-columns:minmax(0,1fr)}
 .schedule-tab {min-width:0;min-height:54px;padding:12px 10px;color:#355d78;
   border-radius:12px;background:transparent;font-size:15px;font-weight:800;
   transition:background .15s,color .15s,box-shadow .15s}

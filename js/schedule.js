@@ -3,6 +3,13 @@
 
   const SHEET_ID = "1ftHNzPYCmHHl9611hHOHmX5H6WUHiQ8h9PkPhUUlfcc";
   const SHEETS = { u6: "U6", u8: "U8", u10: "U10", u12: "U12", u15: "U15" };
+  // 成人邀請賽固定在網站中，從不向 Google 試算表讀取或覆寫。
+  const ADULT_MATCHES = Object.freeze([
+    { type: "match", division: "adult", matchNo: null, date: "12/5", time: "1600-1700", field: "11人制球場", teamA: "藍鯨", score: "", teamB: "香港" },
+    { type: "match", division: "adult", matchNo: null, date: "12/5", time: "1800-1900", field: "11人制球場", teamA: "櫻花", score: "", teamB: "香港" },
+    { type: "match", division: "adult", matchNo: null, date: "12/5", time: "1900-2100", field: "11人制球場", teamA: "半線蒼鷹", score: "", teamB: "越南" },
+    { type: "match", division: "adult", matchNo: null, date: "12/13", time: "1600-1800", field: "11人制球場", teamA: "臺中 Futuro", score: "", teamB: "臺電" }
+  ]);
   const REFRESH_INTERVAL_MS = 30000;
   const TIMEOUT_MS = 12000;
   const engine = window.TaichungScheduleEngine || window.ScheduleEngine;
@@ -98,7 +105,8 @@
     const article = node("article", "schedule-match");
     const meta = node("div", "schedule-match-meta");
     meta.append(
-      node("span", "schedule-match-no", match.matchNo != null ? "第 " + match.matchNo + " 場" : "場次待定"),
+      node("span", "schedule-match-no", match.division === "adult" ? "成人組邀請賽" :
+        (match.matchNo != null ? "第 " + match.matchNo + " 場" : "場次待定")),
       node("strong", "schedule-match-time", formatTime(match.time))
     );
 
@@ -115,20 +123,18 @@
     article.append(
       meta,
       body,
-      node("span", "schedule-match-field", match.field ? "場地 " + match.field : "場地待定")
+      node("span", "schedule-match-field", match.field
+        ? (match.division === "adult" ? match.field : "場地 " + match.field)
+        : "場地待定")
     );
     return article;
   }
 
   function renderMatchList() {
     const group = groupSelect.value;
-    if (group === "adult") {
-      count.textContent = "成人組賽程尚未公告";
-      updated.textContent = "等待大會更新";
-      showState("等待大會公布", "成人組賽程尚未上傳，正式時間、場地及對戰資訊將於大會公告後提供。", "pending", "⚽");
-      return;
-    }
-    const cached = cache.get(group);
+    const cached = group === "adult"
+      ? { matches: ADULT_MATCHES, updatedAt: null }
+      : cache.get(group);
     if (!cached) {
       count.textContent = "";
       updated.textContent = "";
@@ -149,9 +155,11 @@
     count.textContent = searchTerm || date
       ? "找到 " + filteredCount + " 場比賽（共 " + total + " 場）"
       : "共 " + total + " 場比賽";
-    updated.textContent = "最後更新 " + cached.updatedAt.toLocaleTimeString("zh-TW", {
-      hour: "2-digit", minute: "2-digit"
-    });
+    updated.textContent = group === "adult"
+      ? "大會固定賽程"
+      : "最後更新 " + cached.updatedAt.toLocaleTimeString("zh-TW", {
+        hour: "2-digit", minute: "2-digit"
+      });
 
     if (!visible.length) {
       showState("找不到符合的賽程", "請調整日期或隊伍名稱，搜尋其他場次。", "pending", "🔎");
@@ -181,13 +189,18 @@
 
   function render() {
     const isMatches = activeTab === "matches";
-    search.disabled = !isMatches || groupSelect.value === "adult";
-    dateSelect.disabled = !isMatches || groupSelect.value === "adult";
+    const isAdult = groupSelect.value === "adult";
+    search.disabled = !isMatches;
+    dateSelect.disabled = !isMatches;
+    tabs.forEach((button) => {
+      const unavailable = isAdult && button.dataset.scheduleTab !== "matches";
+      button.hidden = unavailable;
+      button.disabled = unavailable;
+    });
+    document.querySelector(".schedule-tabs")?.classList.toggle("is-single-tab", isAdult);
     if (activeTab !== "bracket") window.TaichungBracketView?.cleanup();
-    if (groupSelect.value === "adult") {
-      count.textContent = "成人組賽程尚未公告";
-      updated.textContent = "等待大會更新";
-      showState("等待大會公布", "成人組賽程及分組尚未上傳，將於大會公告後提供。", "pending", "⚽");
+    if (isAdult) {
+      renderMatchList();
       return;
     }
     if (activeTab === "groups") {
@@ -216,6 +229,7 @@
   }
 
   function setActiveTab(tab) {
+    if (groupSelect.value === "adult" && tab !== "matches") return;
     activeTab = tab;
     tabs.forEach((button) => {
       const selected = button.dataset.scheduleTab === tab;
@@ -276,7 +290,7 @@
   }
 
   function updateDates(group) {
-    const cached = cache.get(group);
+    const cached = group === "adult" ? { matches: ADULT_MATCHES } : cache.get(group);
     const previous = dateSelect.value;
     const dates = cached ? [...new Set(cached.matches.map((match) => match.date).filter(Boolean))] : [];
     dateSelect.replaceChildren(new Option("全部日期", ""));

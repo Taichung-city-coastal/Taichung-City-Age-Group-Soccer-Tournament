@@ -79,7 +79,7 @@
     if (label) label.textContent = groups[safe]+" · MATCH SCHEDULE";
     const description = document.getElementById("group-description");
     if (description) description.textContent = safe === "adult"
-      ? "成人組賽程尚未公告，請留意後續更新。"
+      ? "成人組邀請賽賽程已公告。"
       : groups[safe]+" 賽程依大會公告更新。";
     document.title = groups[safe]+"賽程｜115年臺中市分齡足球友誼賽暨國際足球邀請賽";
     document.querySelectorAll('.nav-schedule a').forEach(link => {
