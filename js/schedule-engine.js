@@ -10,13 +10,14 @@
 })(typeof globalThis !== "undefined" ? globalThis : this, function () {
   "use strict";
 
-  // 固定分組快照：2026-11-26 讀取本賽事 Google 試算表右側分組欄。
+  // 固定分組快照：2026-11-26 依大會 Google 試算表更正 U6，
+  // 將「東勢幼兒園（閃電疾風）」與「LOBO」互換 A/B 組。
   // U6: L/M、U8: K/L/M、U10/U12/U15: J/K。
   // 網站只從賽程 A-H 欄更新比分，絕不在執行時重抓或覆蓋這份分組隊名。
   const GROUPS = Object.freeze({
     u6: Object.freeze({
-      A: Object.freeze(["LOBO", "U-Kicker", "ORIGINAL"]),
-      B: Object.freeze(["東勢幼兒園（閃電疾風）", "海線", "HIKARI", "灣島黑狼"])
+      A: Object.freeze(["東勢幼兒園（閃電疾風）", "U-Kicker", "ORIGINAL"]),
+      B: Object.freeze(["LOBO", "海線", "HIKARI", "灣島黑狼"])
     }),
     u8: Object.freeze({
       A: Object.freeze(["藍鯨", "永隆", "山海屯", "TRAVELER"]),
