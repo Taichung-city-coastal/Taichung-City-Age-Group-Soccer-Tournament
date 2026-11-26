@@ -9,7 +9,6 @@
   const groupSelect = document.getElementById("group-select");
   const search = document.getElementById("schedule-search");
   const dateSelect = document.getElementById("schedule-date");
-  const refreshButton = document.getElementById("schedule-refresh");
   const count = document.getElementById("schedule-count");
   const updated = document.getElementById("schedule-updated");
   const view = document.getElementById("schedule-view");
@@ -21,7 +20,6 @@
   let activeTab = "matches";
   let lastLoadedGroup = "";
   let requestCounter = 0;
-  let loading = false;
 
   function node(tag, className, text) {
     const element = document.createElement(tag);
@@ -70,9 +68,7 @@
     if (!match) return text || "比賽日";
     const month = Number(match[1]);
     const day = Number(match[2]);
-    const dayName = new Date(Date.UTC(2026, month - 1, day, 12))
-      .toLocaleDateString("zh-TW", { weekday: "long", timeZone: "Asia/Taipei" });
-    return "2026 / " + month + " / " + day + " · " + dayName;
+    return "2026 / " + month + " / " + day;
   }
 
   function formattedScore(raw) {
@@ -103,8 +99,7 @@
     const meta = node("div", "schedule-match-meta");
     meta.append(
       node("span", "schedule-match-no", match.matchNo != null ? "第 " + match.matchNo + " 場" : "場次待定"),
-      node("strong", "schedule-match-time", formatTime(match.time)),
-      node("span", "schedule-match-field", match.field ? "場地 " + match.field : "場地待定")
+      node("strong", "schedule-match-time", formatTime(match.time))
     );
 
     const body = node("div", "schedule-match-body");
@@ -117,7 +112,11 @@
       center,
       node("strong", "schedule-team", match.teamB || "待定")
     );
-    article.append(meta, body);
+    article.append(
+      meta,
+      body,
+      node("span", "schedule-match-field", match.field ? "場地 " + match.field : "場地待定")
+    );
     return article;
   }
 
@@ -184,13 +183,33 @@
     const isMatches = activeTab === "matches";
     search.disabled = !isMatches || groupSelect.value === "adult";
     dateSelect.disabled = !isMatches || groupSelect.value === "adult";
-    refreshButton.disabled = !isMatches || groupSelect.value === "adult" || loading;
-    if (!isMatches) {
-      count.textContent = activeTab === "groups" ? "小組表" : "對戰階梯圖";
-      updated.textContent = "";
-      showState("載入失敗", activeTab === "groups"
-        ? "小組表暫時無法載入，請以大會正式公告為準。"
-        : "對戰階梯圖暫時無法載入，請以大會正式公告為準。", "error", "!");
+    if (activeTab !== "bracket") window.TaichungBracketView?.cleanup();
+    if (groupSelect.value === "adult") {
+      count.textContent = "成人組賽程尚未公告";
+      updated.textContent = "等待大會更新";
+      showState("等待大會公布", "成人組賽程及分組尚未上傳，將於大會公告後提供。", "pending", "⚽");
+      return;
+    }
+    if (activeTab === "groups") {
+      const groups = engine.GROUPS[groupSelect.value] || {};
+      const cached = cache.get(groupSelect.value);
+      count.textContent = Object.keys(groups).length + " 個小組 · " +
+        Object.values(groups).reduce((sum, teams) => sum + teams.length, 0) + " 支隊伍";
+      updated.textContent = cached
+        ? "比分最後更新 " + cached.updatedAt.toLocaleTimeString("zh-TW", { hour: "2-digit", minute: "2-digit" })
+        : "分組名單已固定 · 比分待同步";
+      view.replaceChildren(window.TaichungGroupView.render(groupSelect.value, cached?.matches || []));
+      return;
+    }
+    if (activeTab === "bracket") {
+      const cached = cache.get(groupSelect.value);
+      count.textContent = "對戰階梯圖 · " + groupSelect.value.toUpperCase();
+      updated.textContent = cached
+        ? "比分最後更新 " + cached.updatedAt.toLocaleTimeString("zh-TW", { hour: "2-digit", minute: "2-digit" })
+        : "固定籤表已載入 · 比分待同步";
+      const result = window.TaichungBracketView.render(groupSelect.value, cached?.matches || []);
+      view.replaceChildren(result.content);
+      result.activate();
       return;
     }
     renderMatchList();
@@ -270,9 +289,6 @@
     if (group === "adult") return;
     const activeVersion = ++requestVersion;
     const isFirst = !cache.has(group);
-    loading = true;
-    refreshButton.textContent = "更新中...";
-    refreshButton.disabled = true;
     if (activeTab === "matches" && isFirst) render();
     try {
       const rows = await requestSheet(SHEETS[group]);
@@ -304,24 +320,20 @@
         retry.addEventListener("click", () => refresh(true));
         view.querySelector(".schedule-empty").append(retry);
       } else {
-        updated.textContent = "更新失敗 · 顯示上次讀取資料";
-      }
-    } finally {
-      if (activeVersion === requestVersion) {
-        loading = false;
-        refreshButton.disabled = activeTab !== "matches" || groupSelect.value === "adult";
-        refreshButton.textContent = "重新整理";
+        updated.textContent = activeTab === "groups" || activeTab === "bracket"
+          ? "比分更新失敗 · 固定分組名單仍可查看"
+          : "更新失敗 · 顯示上次讀取資料";
       }
     }
   }
 
   function selectGroup() {
+    const changedByUser = lastLoadedGroup !== "" && lastLoadedGroup !== groupSelect.value;
     requestVersion += 1; // Discard slow responses from previously selected divisions.
-    loading = false;
     activeTab = "matches";
     view.setAttribute("aria-labelledby", "schedule-tab-matches");
     tabs.forEach((button) => {
-      const active = button.dataset.scheduleTab === "matches";
+      const active = button.dataset.scheduleTab === activeTab;
       button.setAttribute("aria-selected", String(active));
       button.tabIndex = active ? 0 : -1;
     });
@@ -331,6 +343,9 @@
     render();
     if (groupSelect.value !== "adult") refresh(false);
     lastLoadedGroup = groupSelect.value;
+    if (changedByUser) {
+      document.querySelector(".schedule-tabs")?.scrollIntoView({ block: "start" });
+    }
   }
 
   tabs.forEach((button, index) => {
@@ -346,13 +361,12 @@
   });
   search.addEventListener("input", () => { if (activeTab === "matches") render(); });
   dateSelect.addEventListener("change", () => { if (activeTab === "matches") render(); });
-  refreshButton.addEventListener("click", () => refresh(true));
   document.addEventListener("taichung:group-changed", (event) => {
     if (event.detail.group !== lastLoadedGroup) selectGroup();
   });
   selectGroup();
   window.setInterval(() => {
-    if (!document.hidden && activeTab === "matches" && groupSelect.value !== "adult") {
+    if (!document.hidden && groupSelect.value !== "adult") {
       refresh(false);
     }
   }, REFRESH_INTERVAL_MS);

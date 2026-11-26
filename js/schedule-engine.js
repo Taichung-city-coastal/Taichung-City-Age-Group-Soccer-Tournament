@@ -10,6 +10,9 @@
 })(typeof globalThis !== "undefined" ? globalThis : this, function () {
   "use strict";
 
+  // 固定分組快照：2026-11-26 讀取本賽事 Google 試算表右側分組欄。
+  // U6: L/M、U8: K/L/M、U10/U12/U15: J/K。
+  // 網站只從賽程 A-H 欄更新比分，絕不在執行時重抓或覆蓋這份分組隊名。
   const GROUPS = Object.freeze({
     u6: Object.freeze({
       A: Object.freeze(["LOBO", "U-Kicker", "ORIGINAL"]),
@@ -32,6 +35,41 @@
       A: Object.freeze(["BEST", "肯尼獅", "THUFC"]),
       B: Object.freeze(["藍鯨", "海線", "TRAVELER", "KICKSTART"])
     })
+  });
+
+  const BRACKET_CONFIG = Object.freeze({
+    u6: Object.freeze({ matches: Object.freeze([
+      Object.freeze({ id: 10, refs: Object.freeze(["A1", "B2"]), kind: "semi" }),
+      Object.freeze({ id: 11, refs: Object.freeze(["A2", "B1"]), kind: "semi" }),
+      Object.freeze({ id: 12, refs: Object.freeze(["敗10", "敗11"]), kind: "bronze" }),
+      Object.freeze({ id: 13, refs: Object.freeze(["勝10", "勝11"]), kind: "final" })
+    ]) }),
+    u8: Object.freeze({ matches: Object.freeze([
+      Object.freeze({ id: 16, refs: Object.freeze(["C1", "B2"]), kind: "prelim" }),
+      Object.freeze({ id: 17, refs: Object.freeze(["A2", "C2"]), kind: "prelim" }),
+      Object.freeze({ id: 18, refs: Object.freeze(["A1", "勝16"]), kind: "semi" }),
+      Object.freeze({ id: 19, refs: Object.freeze(["勝17", "B1"]), kind: "semi" }),
+      Object.freeze({ id: 20, refs: Object.freeze(["敗18", "敗19"]), kind: "bronze" }),
+      Object.freeze({ id: 21, refs: Object.freeze(["勝18", "勝19"]), kind: "final" })
+    ]) }),
+    u10: Object.freeze({ matches: Object.freeze([
+      Object.freeze({ id: 7, refs: Object.freeze(["A1", "B2"]), kind: "semi" }),
+      Object.freeze({ id: 8, refs: Object.freeze(["A2", "B1"]), kind: "semi" }),
+      Object.freeze({ id: 9, refs: Object.freeze(["敗7", "敗8"]), kind: "bronze" }),
+      Object.freeze({ id: 10, refs: Object.freeze(["勝7", "勝8"]), kind: "final" })
+    ]) }),
+    u12: Object.freeze({ matches: Object.freeze([
+      Object.freeze({ id: 13, refs: Object.freeze(["A1", "B2"]), kind: "semi" }),
+      Object.freeze({ id: 14, refs: Object.freeze(["A2", "B1"]), kind: "semi" }),
+      Object.freeze({ id: 15, refs: Object.freeze(["敗13", "敗14"]), kind: "bronze" }),
+      Object.freeze({ id: 16, refs: Object.freeze(["勝13", "勝14"]), kind: "final" })
+    ]) }),
+    u15: Object.freeze({ matches: Object.freeze([
+      Object.freeze({ id: 10, refs: Object.freeze(["A1", "B2"]), kind: "semi" }),
+      Object.freeze({ id: 11, refs: Object.freeze(["A2", "B1"]), kind: "semi" }),
+      Object.freeze({ id: 12, refs: Object.freeze(["敗10", "敗11"]), kind: "bronze" }),
+      Object.freeze({ id: 13, refs: Object.freeze(["勝10", "勝11"]), kind: "final" })
+    ]) })
   });
 
   const TEAM_ALIASES = Object.freeze({
@@ -346,7 +384,10 @@
     const teams = GROUPS[division] && GROUPS[division][letter];
     if (!teams) return null;
     const collected = collectGroupGames(division, rows, letter);
-    const entries = teams.map((name) => ({ name, points: 0, played: 0, goalsFor: 0, goalsAgainst: 0, goalDifference: 0 }));
+    const entries = teams.map((name) => ({
+      name, points: 0, played: 0, wins: 0, draws: 0, losses: 0,
+      goalsFor: 0, goalsAgainst: 0, goalDifference: 0
+    }));
 
     collected.games.forEach((game) => {
       const [home, away] = game.goals;
@@ -355,6 +396,9 @@
         const entry = entries[sideIndex];
         entry.points += outcome[side];
         entry.played += 1;
+        if (home === away) entry.draws += 1;
+        else if (outcome[side] === 3) entry.wins += 1;
+        else entry.losses += 1;
         entry.goalsFor += side === 0 ? home : away;
         entry.goalsAgainst += side === 0 ? away : home;
         entry.goalDifference = entry.goalsFor - entry.goalsAgainst;
@@ -436,6 +480,146 @@
     return { type: "team", team: raw, token: raw, raw };
   }
 
+  function orientedResult(sourceResult, sourceSides) {
+    if (!sourceResult || !Array.isArray(sourceSides) || sourceSides.length !== 2 ||
+        sourceSides.some((side) => side !== 0 && side !== 1) || sourceSides[0] === sourceSides[1]) return null;
+    const pick = (values) => Array.isArray(values) ? sourceSides.map((side) => values[side]) : null;
+    const goals = pick(sourceResult.goals);
+    const regular = pick(sourceResult.regular);
+    const overtime = pick(sourceResult.overtime);
+    const penalties = pick(sourceResult.penalties);
+    const winnerSide = sourceResult.winnerSide == null ? null : sourceSides.indexOf(sourceResult.winnerSide);
+    let label = goals ? goals.join(":") : "";
+    if (sourceResult.overtimePlayed) label += " OT" + (overtime && regular ? " " + overtime.join(":") : "");
+    if (penalties) label += " PK " + penalties.join(":");
+    return {
+      ...sourceResult,
+      label,
+      goals,
+      regular,
+      overtime,
+      penalties,
+      winnerSide,
+      isDecisive: winnerSide !== null
+    };
+  }
+
+  function fixedSourceSides(division, refs, participants, row) {
+    if (!row) return [null, null];
+    const sourceValues = [row.teamA, row.teamB];
+    const sourceRefs = sourceValues.map(parseSeed);
+
+    function pairingScore(fixedSide, sourceSide) {
+      const fixed = refs[fixedSide];
+      const source = sourceRefs[sourceSide];
+      if (!fixed || !source) return -1000;
+      if (fixed.token === source.token) return 100;
+
+      const participant = participants[fixedSide];
+      if (participant && source.type === "team" &&
+          teamKey(canonicalTeam(division, source.team)) === teamKey(participant)) return 90;
+
+      if (fixed.type === "group" && source.type === "team") {
+        const sourceTeam = canonicalTeam(division, source.team);
+        if (groupLetterForTeam(division, sourceTeam) === fixed.group) return 30;
+      }
+
+      if (fixed.type === "team" && source.type === "team" &&
+          teamKey(canonicalTeam(division, fixed.team)) === teamKey(canonicalTeam(division, source.team))) return 100;
+      return 0;
+    }
+
+    const forward = pairingScore(0, 0) + pairingScore(1, 1);
+    const reverse = pairingScore(0, 1) + pairingScore(1, 0);
+    if (forward > reverse && forward > 0) return [0, 1];
+    if (reverse > forward && reverse > 0) return [1, 0];
+    return [null, null];
+  }
+
+  function buildFixedBracket(divisionInput, rows, options) {
+    const division = normalizeDivision(divisionInput) || normalizeText(divisionInput).toLowerCase();
+    const config = BRACKET_CONFIG[division];
+    if (!config) return { division, seeds: {}, matches: [], rounds: [], byMatch: new Map(), config: null };
+
+    const normalized = ensureNormalized(rows || [], division);
+    const seeds = Object.assign({}, resolveGroupSeeds(division, normalized, options), options && options.seeds);
+    const sourceRows = new Map();
+    normalized.forEach((row) => {
+      if (!row || row.type !== "match") return;
+      if (row.division && row.division !== division) return;
+      const number = row.matchNo != null ? row.matchNo : row.number;
+      if (number != null && !sourceRows.has(number)) sourceRows.set(number, row);
+    });
+
+    const definitions = new Map(config.matches.map((match) => [match.id, match]));
+    const cache = new Map();
+
+    function resolve(number, path) {
+      if (cache.has(number)) return cache.get(number);
+      const definition = definitions.get(number);
+      if (!definition) return null;
+      path = path || new Set();
+      if (path.has(number)) return null;
+      const nextPath = new Set(path);
+      nextPath.add(number);
+      const refs = definition.refs.map(parseSeed);
+      const participants = refs.map((ref) => {
+        if (!ref) return null;
+        if (ref.type === "group") return seeds[ref.token] || null;
+        if (ref.type === "team") return canonicalTeam(division, ref.team) || null;
+        const previous = resolve(ref.matchNo, nextPath);
+        if (!previous || previous.winnerSide == null) return null;
+        return ref.outcome === "winner" ? previous.winner : previous.loser;
+      });
+
+      const row = sourceRows.get(number) || null;
+      const sourceSides = fixedSourceSides(division, refs, participants, row);
+      const sourceResult = row && (row.result || parseResult(row.score));
+      const result = orientedResult(sourceResult, sourceSides);
+      const canNameWinner = participants.every(Boolean) && result && result.winnerSide !== null;
+      const winnerSide = canNameWinner ? result.winnerSide : null;
+      let status = "waiting-result";
+      if (participants.some((team) => !team)) status = "waiting-seeds";
+      else if (!row || !sourceResult) status = "waiting-result";
+      else if (sourceSides.some((side) => side == null)) status = "source-unresolved";
+      else if (!result || result.winnerSide == null) status = "tied-unresolved";
+      else status = "complete";
+
+      const state = {
+        matchNo: number,
+        seeds: definition.refs.slice(),
+        participants,
+        winnerSide,
+        winner: winnerSide == null ? null : participants[winnerSide],
+        loser: winnerSide == null ? null : participants[1 - winnerSide],
+        result,
+        score: result ? result.label : (row ? normalizeText(row.score) : ""),
+        sourceSides,
+        status,
+        kind: definition.kind,
+        date: row ? row.date : "",
+        time: row ? row.time : "",
+        field: row ? row.field : ""
+      };
+      cache.set(number, state);
+      return state;
+    }
+
+    config.matches.forEach((match) => resolve(match.id));
+    const matches = config.matches.map((match) => cache.get(match.id));
+    const rounds = [];
+    const byKind = new Map();
+    matches.forEach((match) => {
+      if (!byKind.has(match.kind)) {
+        const round = { kind: match.kind, matches: [] };
+        byKind.set(match.kind, round);
+        rounds.push(round);
+      }
+      byKind.get(match.kind).matches.push(match);
+    });
+    return { division, seeds, matches, rounds, byMatch: cache, config };
+  }
+
   function buildBracketLadder(divisionInput, rows, options) {
     const division = normalizeDivision(divisionInput) || normalizeText(divisionInput).toLowerCase();
     const normalized = ensureNormalized(rows, division);
@@ -513,6 +697,7 @@
 
   return Object.freeze({
     GROUPS,
+    BRACKET_CONFIG,
     parseResult,
     normalizeData,
     normalizeDivision,
@@ -522,6 +707,7 @@
     computeAllGroupStandings,
     resolveGroupSeeds,
     parseSeed,
+    buildFixedBracket,
     buildBracketLadder,
     resolveBracket: buildBracketLadder
   });

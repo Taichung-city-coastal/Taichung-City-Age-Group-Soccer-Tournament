@@ -2,7 +2,7 @@
 .schedule-page { --match-blue:#125d95; --match-ink:#183c60; }
 .schedule-page .schedule-controls {
   display:grid;
-  grid-template-columns:minmax(190px,240px) minmax(230px,1fr) auto;
+  grid-template-columns:minmax(190px,240px) minmax(230px,1fr);
   align-items:end; gap:18px; padding:24px; border:1px solid var(--line);
   border-radius:18px; background:#fff; box-shadow:0 10px 34px #0b41730b;
 }
@@ -15,16 +15,12 @@
 }
 .schedule-filter input {font-weight:500}
 .schedule-filter input::placeholder {color:#7b8b9a}
-.schedule-refresh {height:51px;white-space:nowrap;background:#e5f3fd;
-  border:1px solid #b6d7ed;border-radius:10px;color:var(--match-blue);padding:0 20px;font-weight:800}
-.schedule-refresh:hover {background:#d2eafa}
-.schedule-refresh:disabled {cursor:wait;opacity:.6}
 .schedule-subline {display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;
   padding:13px 3px 24px;color:var(--muted);font-size:13px}
 .schedule-count {font-weight:800;color:var(--navy)}
 .schedule-updated {font-variant-numeric:tabular-nums}
 .schedule-tabs {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;
-  margin-bottom:28px;padding:7px;border-radius:16px;background:#e5f2fa}
+  margin-bottom:28px;padding:7px;border-radius:16px;background:#e5f2fa;scroll-margin-top:95px}
 .schedule-tab {min-width:0;min-height:54px;padding:12px 10px;color:#355d78;
   border-radius:12px;background:transparent;font-size:15px;font-weight:800;
   transition:background .15s,color .15s,box-shadow .15s}
@@ -37,7 +33,7 @@
 .schedule-day-heading h2 {margin:0;font-size:23px;color:var(--navy)}
 .schedule-day-heading span {font-size:12px;color:var(--muted);font-weight:700;white-space:nowrap}
 .schedule-match-list {display:grid;gap:11px}
-.schedule-match {display:grid;grid-template-columns:180px minmax(0,1fr);gap:18px;
+.schedule-match {display:grid;grid-template-columns:180px minmax(0,1fr) 86px;gap:18px;
   align-items:center;border:1px solid #cce1ee;background:#fff;border-radius:14px;
   padding:18px 21px;box-shadow:0 5px 18px #102e550a}
 .schedule-match-meta {display:flex;flex-direction:column;gap:4px;
@@ -45,7 +41,9 @@
 .schedule-match-no {font-size:13px;font-weight:800;color:var(--match-blue)}
 .schedule-match-time {font-size:20px;line-height:1.4;font-variant-numeric:tabular-nums;
   font-weight:900;color:var(--navy)}
-.schedule-match-field {font-size:12px;font-weight:700}
+.schedule-match-field {font-size:12px;font-weight:800;color:#215f8e;
+  justify-self:end;text-align:right;white-space:nowrap;border-radius:8px;
+  background:#e9f4fc;padding:8px 10px}
 .schedule-match-body {display:grid;grid-template-columns:minmax(0,1fr) minmax(68px,112px) minmax(0,1fr);
   align-items:center;gap:10px}
 .schedule-team {font-size:clamp(14px,1.45vw,18px);font-weight:800;color:var(--match-ink);
@@ -70,23 +68,209 @@
 .schedule-empty .button {margin-top:18px}
 .schedule-empty.is-error {background:#fffafa;border-color:#efcece}
 .schedule-empty.is-error .schedule-empty-icon {background:#ffebeb}
-.schedule-aux {margin-top:34px}
-.schedule-aux p {margin-bottom:0}
+
+/* 學童盃參考：每組三角形／方形對戰圖，固定隊名放角落，比分寫在線上。 */
+.fixed-groups-grid {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:1fr;gap:18px}
+.fixed-group-card {min-width:0;padding:18px;border:1px solid #c9e0ef;border-radius:18px;
+  background:linear-gradient(180deg,#ffffff,#f5faff);box-shadow:0 8px 27px #0d467010;
+  display:flex;flex-direction:column;height:100%}
+.fixed-group-heading {display:flex;align-items:center;justify-content:space-between;gap:12px;
+  border-bottom:1px solid #d8e9f3;padding:0 2px 13px}
+.fixed-group-heading h3 {margin:0;font-size:22px;font-weight:900;color:#104b7a}
+.fixed-group-heading span {font-size:12px;color:#567890;font-weight:700;text-align:right}
+.fixed-group-figure {position:relative;min-width:0;margin:12px 0 16px}
+.fixed-group-figure--3 {height:300px}
+.fixed-group-svg {position:absolute;left:50%;top:76px;transform:translateX(-50%);
+  width:min(250px,75%);height:168px;overflow:visible}
+.fixed-group-figure--4 {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+  grid-template-rows:auto 195px auto;align-items:start;column-gap:12px;row-gap:9px;padding:5px 2px}
+.fixed-group-figure--4 .fixed-group-svg {position:relative;grid-column:1 / -1;grid-row:2;
+  justify-self:center;top:auto;left:auto;transform:none;width:min(260px,82%);height:195px}
+.fixed-group-outline {fill:#e5f4ff;fill-opacity:.7;stroke:#46a2d5;stroke-width:2.8;
+  stroke-linejoin:round}
+.fixed-group-diagonal {stroke:#66b1dc;stroke-width:2.3}
+.fixed-group-letter {fill:#1d79ad;font:900 26px Arial,sans-serif;text-anchor:middle;
+  paint-order:stroke;stroke:#eaf6fd;stroke-width:4}
+.fixed-group-game-number {fill:#184e78;font:800 11px Arial,sans-serif;text-anchor:middle;
+  paint-order:stroke;stroke:#eaf6fd;stroke-width:4;stroke-linejoin:round}
+.fixed-group-game-score {fill:#a85c06;font:900 15px Arial,sans-serif;text-anchor:middle;
+  paint-order:stroke;stroke:#f7fcff;stroke-width:5;stroke-linejoin:round}
+.fixed-group-game-pk {fill:#345e82;font:800 9px Arial,sans-serif;text-anchor:middle;
+  paint-order:stroke;stroke:#f7fcff;stroke-width:4}
+.fixed-group-team {z-index:1;min-width:0;padding:9px 8px;display:flex;flex-direction:column;
+  justify-content:center;align-items:center;gap:2px;border:1px solid #bcd9ea;border-radius:11px;
+  background:#103d70;color:#fff;text-align:center;overflow-wrap:anywhere;line-height:1.4;
+  box-shadow:0 5px 10px #0a3b6320}
+.fixed-group-team-name {font-size:13px;font-weight:800}
+.fixed-group-team-points {font-size:13px;color:#ffe099;font-weight:900;font-variant-numeric:tabular-nums}
+.fixed-group-qualifier {display:inline-block;padding:2px 9px;border-radius:20px;
+  background:#f5cf73;color:#163956;font-size:11px;font-weight:900}
+.fixed-group-team.is-first {border:2px solid #f1bf4d}
+.fixed-group-team.is-second {border:2px solid #78bbeb}
+.fixed-group-team.is-second .fixed-group-qualifier {background:#a8d8fa}
+.fixed-group-figure--3 .fixed-group-team {position:absolute;width:43%;max-width:185px;min-height:56px}
+.fixed-group-figure--3 .fixed-group-team--top {left:50%;top:1px;transform:translateX(-50%)}
+.fixed-group-figure--3 .fixed-group-team--bottom-left {left:0;top:242px}
+.fixed-group-figure--3 .fixed-group-team--bottom-right {right:0;top:242px}
+.fixed-group-figure--4 .fixed-group-team {position:relative;min-height:58px}
+.fixed-group-team--top-left {grid-column:1;grid-row:1}
+.fixed-group-team--top-right {grid-column:2;grid-row:1}
+.fixed-group-team--bottom-left {grid-column:1;grid-row:3}
+.fixed-group-team--bottom-right {grid-column:2;grid-row:3}
+.fixed-group-note {font-size:12px;color:#59758b;margin:0 0 12px;
+  padding:12px 14px;border-radius:8px;background:#e8f3fb}
+.fixed-group-table-wrap {width:100%;overflow-x:auto;max-width:100%;
+  border:1px solid #d8e7f0;border-radius:10px;background:#fff}
+.fixed-group-table {width:100%;min-width:0;table-layout:auto;border-collapse:collapse;
+  font-size:12px;line-height:1.5}
+.fixed-group-table thead {background:#e9f4fb;color:#1a5079}
+.fixed-group-table th,.fixed-group-table td {padding:9px 4px;text-align:center;
+  white-space:nowrap;border:0;border-bottom:1px solid #ecf2f6}
+.fixed-group-table thead th {font-size:11px;font-weight:800}
+.fixed-group-table tbody th {white-space:normal;text-align:left;min-width:110px;
+  padding-left:10px;font-size:12px;overflow-wrap:anywhere}
+.fixed-group-table tbody tr:nth-child(even) {background:#f7fbfe}
+.fixed-group-table tbody tr.is-first {background:#fff8e9}
+.fixed-group-col-points {color:#0c609d;font-weight:900}
+.fixed-group-rank {display:inline-flex;align-items:center;justify-content:center;
+  width:19px;height:19px;border-radius:50%;background:#d6e8f4;color:#15537b;
+  font-size:11px;margin-right:5px;vertical-align:middle}
+.fixed-group-fixtures {margin-top:auto;border-top:1px solid #d7e8f2;padding-top:11px}
+.fixed-group-fixtures summary {font-size:12px;font-weight:800;color:#145a8b;cursor:pointer}
+.fixed-group-fixtures-list {margin-top:11px;display:grid;gap:5px}
+.fixed-group-fixture {display:grid;grid-template-columns:40px minmax(0,1fr) 76px minmax(0,1fr);
+  gap:8px;align-items:center;border:1px solid #e1edf5;border-radius:7px;
+  padding:8px 9px;font-size:12px}
+.fixed-group-fixture small {font-size:11px;color:#65859a}
+.fixed-group-fixture span {min-width:0;overflow-wrap:anywhere}
+.fixed-group-fixture span:last-child {text-align:right}
+.fixed-group-fixture strong {text-align:center;color:#195b8b;font-size:14px}
+.fixed-group-fixture-none {margin:0;padding:7px;color:var(--muted);font-size:12px}
+
+/* 「學童盃」式由下往上晉級圖：正交賽線、冠季軍分流和亮線動畫 */
+.cup-bracket-intro {margin:0 0 16px}
+.cup-bracket-intro h2 {margin:0 0 7px;color:#123d70;font-size:25px;letter-spacing:.01em}
+.cup-bracket-intro p {margin:0;font-size:13px;color:#536f85;line-height:1.8}
+.cup-bracket-panel {overflow:hidden;border-radius:19px;background:#081f42;
+  border:1px solid #1d5685;box-shadow:0 12px 35px rgba(16,48,83,.14)}
+@media(min-width:900px) {
+  .cup-bracket-intro,.cup-bracket-panel {width:100%;max-width:1100px;margin-inline:auto}
+}
+.cup-bracket-toolbar {min-height:58px;display:flex;gap:9px;align-items:center;justify-content:flex-end;
+  padding:10px 15px;background:#123763;border-bottom:1px solid #295c86}
+.cup-bracket-gesture-tip {font-size:12px;color:#bdd6ef;margin-right:auto;font-weight:700}
+.cup-bracket-zoom-button {min-width:39px;min-height:37px;border-radius:9px;
+  border:1px solid rgba(128,196,255,.5);background:rgba(25,76,141,.64);
+  color:#fff;font-size:15px;font-weight:800;
+  padding:4px 10px}
+.cup-bracket-zoom-button:hover {background:#2a6ca1}
+.cup-bracket-zoom-button:focus-visible {outline:2px solid #ffdf76;outline-offset:2px}
+.cup-bracket-zoom-button[data-bracket-zoom-percent] {min-width:51px;font-variant-numeric:tabular-nums}
+.cup-bracket-scroll {height:auto;max-width:100%;overflow:auto;padding-bottom:10px;
+  overscroll-behavior:contain;touch-action:none;cursor:grab;scrollbar-color:rgba(130,194,255,.55) rgba(255,255,255,.07)}
+.cup-bracket-scroll.is-dragging {cursor:grabbing}
+.cup-bracket-scroll:focus-visible {outline:2px solid #ffe77e;outline-offset:-2px}
+.cup-bracket-viewport {position:relative;margin-inline:auto;overflow:visible}
+.cup-bracket-canvas {position:absolute;left:0;top:0;transform-origin:top left;
+  border-radius:16px;background:radial-gradient(ellipse at 50% 24%,rgba(34,98,176,.25),rgba(5,20,48,.72) 74%);
+  user-select:none;-webkit-user-select:none}
+.cup-bracket-canvas::before {content:"";position:absolute;inset:0;pointer-events:none;
+  opacity:.12;background-image:linear-gradient(#a7c9e2 1px,transparent 1px),
+  linear-gradient(90deg,#a7c9e2 1px,transparent 1px);
+  background-size:44px 44px}
+.cup-bracket-lines {position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.cup-bracket-route {fill:none;stroke:#fff;stroke-width:3.5;stroke-linecap:square;
+  stroke-linejoin:miter;transition:stroke .3s ease,stroke-width .3s ease,filter .3s ease}
+.cup-bracket-route.is-collided {stroke:rgba(255,255,255,.35)}
+.cup-bracket-route.is-bronze {stroke:#67caff;stroke-width:4;stroke-dasharray:13 10;
+  filter:drop-shadow(0 0 4px rgba(103,202,255,.45))}
+.cup-bracket-canvas.has-staged-bronze:not(.is-bronze-unlocked) .cup-bracket-route.is-bronze {opacity:0}
+.cup-bracket-canvas.has-staged-bronze:not(.is-bronze-unlocked) .cup-bracket-node--bronze {
+  opacity:0;visibility:hidden}
+.cup-bracket-lights {pointer-events:none}
+.cup-bracket-route-light {fill:none;stroke:#f0f950;stroke-width:7;
+  stroke-linecap:round;stroke-linejoin:round;opacity:0;
+  filter:drop-shadow(0 0 4px #f0f950) drop-shadow(0 0 10px rgba(240,249,80,.55))}
+.cup-bracket-route-light.is-bronze {stroke:#67caff;filter:drop-shadow(0 0 7px rgba(103,202,255,.8))}
+.cup-bracket-route-spark {fill:#fffed0;opacity:0;
+  filter:drop-shadow(0 0 5px #f0f950) drop-shadow(0 0 9px #f0f950)}
+.cup-bracket-route-spark.is-bronze {fill:#c4f5ff;filter:drop-shadow(0 0 7px #67caff)}
+.cup-bracket-row-label {position:absolute;left:15px;z-index:1;color:rgba(240,249,80,.8);
+  font-size:14px;font-weight:800}
+.cup-bracket-node {position:absolute;z-index:1;display:flex;flex-direction:column;
+  align-items:center;gap:2px;width:132px;min-height:23px;
+  transform:translateX(-50%);text-align:center;color:#fff;pointer-events:auto;
+  text-shadow:0 2px 5px #061c3b,0 0 5px #061c3b}
+.cup-bracket-node--bronze {z-index:2}
+.cup-bracket-stage {color:#f0f950;font-size:16px;font-weight:900;white-space:nowrap}
+.cup-bracket-node--bronze .cup-bracket-stage {color:#78ddff}
+.cup-bracket-match-number {font-size:14px;font-weight:800;color:#e6efff;line-height:1.5}
+.cup-bracket-score {display:flex;flex-direction:column;align-items:center;gap:3px;
+  margin-top:3px;min-width:69px;padding:3px 8px;border-radius:5px;
+  background:rgba(6,22,52,.9);text-shadow:none}
+.cup-bracket-score.is-score-pending {opacity:0;visibility:hidden;transform:translateY(8px) scale(.92)}
+.cup-bracket-score.is-score-revealed {animation:cup-bracket-score-reveal .4s cubic-bezier(.16,.8,.3,1.18) both}
+@keyframes cup-bracket-score-reveal {
+  from {opacity:0;transform:translateY(8px) scale(.9)}
+  to {opacity:1;transform:translateY(0) scale(1)}
+}
+.cup-bracket-score strong {white-space:nowrap;color:#fff;font-size:19px;font-weight:900}
+.cup-bracket-score small {white-space:nowrap;color:#f0f950;font-size:11px;font-weight:800}
+.cup-bracket-score .cup-bracket-pk {color:#f0f950}
+.cup-bracket-seed {position:absolute;width:148px;z-index:2;
+  transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;
+  text-align:center;gap:5px;color:#fff;transition:opacity .42s ease,color .42s ease}
+.cup-bracket-seed.is-collided {opacity:.38}
+.cup-bracket-seed.is-finished .cup-bracket-seed-code {color:#f0f950}
+.cup-bracket-seed-code {font-size:17px;font-weight:800;color:#f1f5fa}
+.cup-bracket-seed-name {font-size:10px;font-weight:600;line-height:1.45;overflow-wrap:anywhere}
+.cup-bracket-seed-name.is-pending {color:#a7c4dc}
+@media(max-width:760px) {
+  .cup-bracket-intro h2 {font-size:21px}
+  .cup-bracket-intro p {font-size:12px}
+  .cup-bracket-toolbar {padding:8px;gap:5px}
+  .cup-bracket-gesture-tip {font-size:10px}
+  .cup-bracket-zoom-button {min-width:36px;min-height:35px;padding:4px 7px;font-size:13px}
+  .cup-bracket-scroll {max-height:min(68vh,580px)}
+}
+@media(max-width:370px) {
+  .cup-bracket-gesture-tip {max-width:90px;line-height:1.4}
+}
+@media(prefers-reduced-motion:reduce) {
+  .cup-bracket-lights {display:none!important}
+  .cup-bracket-score.is-score-revealed {animation:none}
+}
+@media(max-width:900px) {
+  .fixed-groups-grid {grid-template-columns:minmax(0,1fr)}
+  .fixed-group-card {max-width:680px;width:100%;margin-inline:auto}
+}
 @media(max-width:760px) {
   .schedule-page .schedule-controls {grid-template-columns:1fr;gap:15px;padding:18px}
-  .schedule-refresh {width:100%}
   .schedule-subline {padding:14px 2px 20px}
   .schedule-tab {font-size:13px;min-height:48px;padding:10px 3px}
   .schedule-day-heading h2 {font-size:21px}
-  .schedule-match {grid-template-columns:1fr;gap:14px;padding:15px}
-  .schedule-match-meta {border:0;padding:0;display:flex;flex-direction:row;align-items:center;flex-wrap:wrap;
-    gap:6px 13px;border-bottom:1px solid #e2eef5;padding-bottom:10px}
+  .schedule-match {grid-template-columns:minmax(0,1fr) auto;gap:11px 12px;padding:15px}
+  .schedule-match-meta {grid-column:1;grid-row:1;border:0;padding:0;display:flex;
+    flex-direction:row;align-items:center;flex-wrap:wrap;gap:6px 13px}
   .schedule-match-time {font-size:16px}
-  .schedule-match-body {gap:5px}
+  .schedule-match-field {grid-column:2;grid-row:1;align-self:center}
+  .schedule-match-body {grid-column:1 / -1;grid-row:2;gap:5px;
+    border-top:1px solid #e2eef5;padding-top:11px}
   .schedule-team {font-size:14px}
   .schedule-score strong {font-size:21px}
   .schedule-score small {font-size:10px}
   .schedule-ceremony {flex-direction:column;gap:5px}
+  .fixed-group-card {padding:13px 10px}
+  .fixed-group-team {padding:8px 5px}
+  .fixed-group-team-name {font-size:12px}
+  .fixed-group-figure--4 {row-gap:7px;column-gap:8px}
+  .fixed-group-table .fixed-group-col-wins,
+  .fixed-group-table .fixed-group-col-draws,
+  .fixed-group-table .fixed-group-col-losses,
+  .fixed-group-table .fixed-group-col-goalsFor,
+  .fixed-group-table .fixed-group-col-goalsAgainst {display:none}
+  .fixed-group-table tbody th {min-width:100px;font-size:11px}
+  .fixed-group-table th,.fixed-group-table td {padding:9px 3px;font-size:11px}
 }
 @media(max-width:370px) {
   .schedule-tabs {gap:4px;padding:4px}
@@ -95,4 +279,10 @@
   .schedule-match-body {grid-template-columns:minmax(0,1fr) 58px minmax(0,1fr)}
   .schedule-score strong {font-size:17px}
   .schedule-team {font-size:12px}
+  .fixed-group-heading h3 {font-size:19px}
+  .fixed-group-heading span {font-size:10px}
+  .fixed-group-team-name {font-size:11px}
+  .fixed-group-figure--3 .fixed-group-team {width:44%}
+  .fixed-group-fixture {gap:4px;grid-template-columns:24px minmax(0,1fr) 52px minmax(0,1fr);font-size:11px}
+  .fixed-group-fixture strong {font-size:12px}
 }
