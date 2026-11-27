@@ -2,6 +2,23 @@
    Small screens display the same cells as readable dated cards. */
 #program td div + div { margin-top: 2px; }
 #program tbody th { white-space: nowrap; }
+#invitation-card .invitation-card-link {
+  display: block;
+  width: 100%;
+  max-width: 860px;
+  margin-inline: auto;
+  border: 1px solid #c2ddec;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 8px 24px #104f7412;
+}
+#invitation-card .invitation-card-link img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+#invitation-card .source-note { text-align: center; }
 @media (max-width: 760px) {
   #program .table-scroll { overflow: visible; border: 0; background: transparent; box-shadow: none; }
   #program table { display: block; min-width: 0; width: 100%; background: transparent; }
